@@ -1,0 +1,12 @@
+import pandas as pd data = {
+'City': ['Chennai', 'Delhi', 'Chennai', 'Delhi', 'Mumbai', 'Mumbai', 'Delhi', 'Chennai', 'Mumbai'],
+'Date': ['2023-06-07', '2023-06-14', '2023-07-05', '2023-07-12', '2023-08-01',
+'2023-08-15', '2023-06-21', '2023-08-25', '2023-07-20'],
+'Temperature': [38, 42, 37, 41, 34, 33, 40, 36, 35]
+}
+df = pd.DataFrame(data)
+df['Date'] = pd.to_datetime(df['Date']) df['Month'] = df['Date'].dt.month_name()
+grouped = df.groupby(['City', 'Month'])['Temperature'].sum().reset_index()
+pivot_table = grouped.pivot(index='City', columns='Month', values='Temperature').fillna(0) summer_months = ['June', 'July', 'August']
+pivot_table['Summer_Total'] = pivot_table[summer_months].sum(axis=1) top_city = pivot_table['Summer_Total'].idxmax()
+print("Monthly Temperature Summary:\n", pivot_table) print("\nCity with the highest total summer temperature:", top_city) 
